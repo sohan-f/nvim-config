@@ -19,7 +19,6 @@ return {
 					Lua = {
 						diagnostics = { globals = { "vim" } },
 						workspace = { checkThirdParty = false },
-						hint = { enable = true }, -- Enable hints in Lua
 					},
 				},
 			})
@@ -32,12 +31,6 @@ return {
 					clangdFileStatus = true,
 					usePlaceholders = true,
 					completeUnimported = true,
-					hints = {
-						attributeHints = true,
-						chainingHints = true,
-						parameterNames = true,
-						typeHints = true,
-					},
 				},
 			})
 
@@ -47,18 +40,7 @@ return {
 					local bufnr = args.buf
 					local client = vim.lsp.get_client_by_id(args.data.client_id)
 
-					-- --- INLAY HINTS SETUP ---
-					if client.supports_method("textDocument/inlayHint") then
-						-- Enable by default
-						vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
-
-						-- Toggle Keymap
-						vim.keymap.set("n", "<Leader>uh", function()
-							vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr }))
-						end, { buffer = bufnr, desc = "Toggle Inlay Hints" })
-					end
-					-- ------------------------
-
+					-- CodeLens
 					if client.supports_method("textDocument/codeLens") then
 						vim.lsp.codelens.refresh()
 						vim.api.nvim_create_autocmd({ "InsertLeave", "BufEnter" }, {
@@ -67,6 +49,7 @@ return {
 						})
 					end
 
+					-- Semantic Tokens
 					vim.keymap.set("n", "<Leader>uY", function()
 						vim.lsp.semantic_tokens.stop(bufnr, client.id)
 					end, { buffer = bufnr, desc = "Toggle Semantic Tokens" })

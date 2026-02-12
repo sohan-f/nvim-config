@@ -43,6 +43,10 @@ map("n", "<Esc>", "<cmd>noh<return><esc>", { silent = true })
 
 map("n", "<leader>dg", vim.diagnostic.open_float, { desc = "Line diagnostics" })
 
+map("n", "<leader>uh", function()
+	vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+end, { desc = "Toggle Inlay Hints" })
+
 map("n", "<leader>S", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = "Rename word under cursor" })
 
 -- ================== TERMINAL RUNNER ==================
